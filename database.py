@@ -1,6 +1,15 @@
 
 import sqlite3 as lite
 import pandas as pd
+import sys as sys
+
+try:
+    month = (sys.argv[1])
+except IndexError:
+    month = ('July')
+
+if month not in ['January','February','March','April','May','June','July','August','September','October','November','December']:
+    month = raw_input("Please enter a month as a string: ")
 
 # Connect to the database
 con = lite.connect('getting_started.db')
@@ -45,7 +54,7 @@ with con:
     # Join the data together
     cur.execute("""SELECT name, state FROM cities
         INNER JOIN weather ON name = city
-        where warm_month = 'July'""")
+        where warm_month = '{}'""".format(month))
 
     # Load into a pandas DataFrame
     rows = cur.fetchall()
@@ -57,7 +66,9 @@ with con:
     warm_cities = []
     for i in range(df.shape[0]):
         warm_cities.append([df.get_value(i, 'name'), df.get_value(i, 'state')])
-    print("The cities that are warmest in July are: ")
-    for city in warm_cities:
-        print("\t{}, {}".format(city[0],city[1]))
-
+    if len(warm_cities) == 0:
+        print("No cities have the warmest month in {}".format(month))
+    else:
+        print("The cities that are warmest in {} are: ".format(month))
+        for city in warm_cities:
+            print("\t{}, {}".format(city[0],city[1]))
