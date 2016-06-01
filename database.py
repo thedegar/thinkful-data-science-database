@@ -54,5 +54,7 @@ with con:
 	# Print out the resulting city and state in a full sentence. 
 	# For example: "The cities that are warmest in July are: Las Vegas, NV, Atlanta, GA..."
 	print(df)
+	warm_cities = 0 #need to build this string with components of df object
+	print("The cities that are warmest in July are: {}").format(warm_cities)
 
 
