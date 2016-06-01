@@ -42,17 +42,17 @@ with con:
 	cur.executemany("INSERT INTO weather VALUES(?,?,?,?,?)", weather)
 
 	# Join the data together
-	cur.execute("""SELECT name, state, year, warm_month, cold_month 
-		FROM cities 
-		INNER JOIN weather 
-    	ON name = city""")
+	cur.execute("""SELECT name, state FROM cities 
+		INNER JOIN weather ON name = city
+		where warm_month = 'July'""")
 
 	# Load into a pandas DataFrame
 	rows = cur.fetchall()
   	cols = [desc[0] for desc in cur.description]
   	df = pd.DataFrame(rows, columns=cols)
 
-	# Print out the resulting city and state in a full sentence. For example: "The cities that are warmest in July are: Las Vegas, NV, Atlanta, GA..."
+	# Print out the resulting city and state in a full sentence. 
+	# For example: "The cities that are warmest in July are: Las Vegas, NV, Atlanta, GA..."
 	print(df)
 
 
